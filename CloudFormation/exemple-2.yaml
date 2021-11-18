@@ -47,35 +47,11 @@ Parameters:
     - t3a.small
     ConstraintDescription: Doit-etre un type EC2 supporte.
 
-Mappings:
-
-  AWSInstanceType2Arch:
-    t2.nano:
-      Arch: HVM64
-    t2.micro:
-      Arch: HVM64
-    t2.small:
-      Arch: HVM64
-    t3.micro:
-      Arch: HVM64
-    t3.nano:
-      Arch: HVM64
-    t3.small:
-      Arch: HVM64
-    t3a.micro:
-      Arch: HVM64
-    t3a.nano:
-      Arch: HVM64
-    t3a.small:
-      Arch: HVM64
+  LatestAmiId:
+    Description: Obtenir derniere version AMI de Systems Manager Parameter store
+    Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
+    Default: '/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2'
     
-  AWSRegionArch2AMI:
-    us-east-1:
-      HVM64: ami-01cc34ab2709337aa
-    us-west-2:
-      HVM64: ami-0e5b6b6a9f3db6db8 
-    ca-central-1:
-      HVM64: ami-0d8ad3ab25e7abc51
 
 Resources:
 
@@ -222,14 +198,7 @@ Resources:
       InstanceType: !Ref InstanceType
       SecurityGroupIds:
       - !GetAtt InstanceSecurityGroup.GroupId
-      ImageId: 
-        Fn::FindInMap:
-        - AWSRegionArch2AMI
-        - Ref: AWS::Region
-        - Fn::FindInMap:
-          - AWSInstanceType2Arch
-          - Ref: InstanceType
-          - Arch
+      ImageId: !Ref LatestAmiId
       SubnetId: !Ref PrivateSubnet1
       BlockDeviceMappings:
         - DeviceName: /dev/sda1
@@ -251,6 +220,7 @@ Resources:
         ToPort: '22'
         CidrIp: 0.0.0.0/0
       VpcId: !Ref VPC
+    DeletionPolicy: Retain
 
   EC2InstanceRole:
     Type: AWS::IAM::Role
@@ -277,7 +247,6 @@ Resources:
       Path: /
       Roles: 
        - !Ref EC2InstanceRole
-
 
 Outputs:
   EC2InstanceId:
