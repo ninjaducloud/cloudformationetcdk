@@ -220,7 +220,7 @@ Resources:
         ToPort: '22'
         CidrIp: 0.0.0.0/0
       VpcId: !Ref VPC
-    DeletionPolicy: Retain
+
 
   EC2InstanceRole:
     Type: AWS::IAM::Role

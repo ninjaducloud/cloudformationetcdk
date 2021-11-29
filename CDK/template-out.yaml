@@ -1,0 +1,360 @@
+Resources:
+  VPCDemoMoisDevOpsF2013231:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsHostnames: true
+      EnableDnsSupport: true
+      InstanceTenancy: default
+      Tags:
+        - Key: Name
+          Value: Stack-Exemple-CDK/VPC-Demo-Mois-DevOps
+    Metadata:
+      aws:cdk:path: Stack-Exemple-CDK/VPC-Demo-Mois-DevOps/Resource
+  VPCDemoMoisDevOpsPublicSubnetDemoMoisDevOpsSubnet1Subnet75582B55:
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: 10.0.0.0/22
+      VpcId:
+        Ref: VPCDemoMoisDevOpsF2013231
+      AvailabilityZone:
+        Fn::Select:
+          - 0
+          - Fn::GetAZs: ""
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: Public-Subnet-Demo-Mois-DevOps
+        - Key: aws-cdk:subnet-type
+          Value: Public
+        - Key: Name
+          Value: Stack-Exemple-CDK/VPC-Demo-Mois-DevOps/Public-Subnet-Demo-Mois-DevOpsSubnet1
+    Metadata:
+      aws:cdk:path: Stack-Exemple-CDK/VPC-Demo-Mois-DevOps/Public-Subnet-Demo-Mois-DevOpsSubnet1/Subnet
+  VPCDemoMoisDevOpsPublicSubnetDemoMoisDevOpsSubnet1RouteTable528EE213:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: VPCDemoMoisDevOpsF2013231
+      Tags:
+        - Key: Name
+          Value: Stack-Exemple-CDK/VPC-Demo-Mois-DevOps/Public-Subnet-Demo-Mois-DevOpsSubnet1
+    Metadata:
+      aws:cdk:path: Stack-Exemple-CDK/VPC-Demo-Mois-DevOps/Public-Subnet-Demo-Mois-DevOpsSubnet1/RouteTable
+  VPCDemoMoisDevOpsPublicSubnetDemoMoisDevOpsSubnet1RouteTableAssociationCA26ED8E:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: VPCDemoMoisDevOpsPublicSubnetDemoMoisDevOpsSubnet1RouteTable528EE213
+      SubnetId:
+        Ref: VPCDemoMoisDevOpsPublicSubnetDemoMoisDevOpsSubnet1Subnet75582B55
+    Metadata:
+      aws:cdk:path: Stack-Exemple-CDK/VPC-Demo-Mois-DevOps/Public-Subnet-Demo-Mois-DevOpsSubnet1/RouteTableAssociation
+  VPCDemoMoisDevOpsPublicSubnetDemoMoisDevOpsSubnet1DefaultRoute8ED5011E:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: VPCDemoMoisDevOpsPublicSubnetDemoMoisDevOpsSubnet1RouteTable528EE213
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: VPCDemoMoisDevOpsIGW7D3E0A23
+    DependsOn:
+      - VPCDemoMoisDevOpsVPCGW1FBBEA86
+    Metadata:
+      aws:cdk:path: Stack-Exemple-CDK/VPC-Demo-Mois-DevOps/Public-Subnet-Demo-Mois-DevOpsSubnet1/DefaultRoute
+  VPCDemoMoisDevOpsPublicSubnetDemoMoisDevOpsSubnet1EIP41A987E9:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+      Tags:
+        - Key: Name
+          Value: Stack-Exemple-CDK/VPC-Demo-Mois-DevOps/Public-Subnet-Demo-Mois-DevOpsSubnet1
+    Metadata:
+      aws:cdk:path: Stack-Exemple-CDK/VPC-Demo-Mois-DevOps/Public-Subnet-Demo-Mois-DevOpsSubnet1/EIP
+  VPCDemoMoisDevOpsPublicSubnetDemoMoisDevOpsSubnet1NATGatewayB3C8D409:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      SubnetId:
+        Ref: VPCDemoMoisDevOpsPublicSubnetDemoMoisDevOpsSubnet1Subnet75582B55
+      AllocationId:
+        Fn::GetAtt:
+          - VPCDemoMoisDevOpsPublicSubnetDemoMoisDevOpsSubnet1EIP41A987E9
+          - AllocationId
+      Tags:
+        - Key: Name
+          Value: Stack-Exemple-CDK/VPC-Demo-Mois-DevOps/Public-Subnet-Demo-Mois-DevOpsSubnet1
+    Metadata:
+      aws:cdk:path: Stack-Exemple-CDK/VPC-Demo-Mois-DevOps/Public-Subnet-Demo-Mois-DevOpsSubnet1/NATGateway
+  VPCDemoMoisDevOpsPrivateSubnet1DemoMoisDevOpsSubnet1Subnet2C175514:
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: 10.0.4.0/22
+      VpcId:
+        Ref: VPCDemoMoisDevOpsF2013231
+      AvailabilityZone:
+        Fn::Select:
+          - 0
+          - Fn::GetAZs: ""
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: Private-Subnet1-Demo-Mois-DevOps
+        - Key: aws-cdk:subnet-type
+          Value: Private
+        - Key: Name
+          Value: Stack-Exemple-CDK/VPC-Demo-Mois-DevOps/Private-Subnet1-Demo-Mois-DevOpsSubnet1
+    Metadata:
+      aws:cdk:path: Stack-Exemple-CDK/VPC-Demo-Mois-DevOps/Private-Subnet1-Demo-Mois-DevOpsSubnet1/Subnet
+  VPCDemoMoisDevOpsPrivateSubnet1DemoMoisDevOpsSubnet1RouteTable79C004C5:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: VPCDemoMoisDevOpsF2013231
+      Tags:
+        - Key: Name
+          Value: Stack-Exemple-CDK/VPC-Demo-Mois-DevOps/Private-Subnet1-Demo-Mois-DevOpsSubnet1
+    Metadata:
+      aws:cdk:path: Stack-Exemple-CDK/VPC-Demo-Mois-DevOps/Private-Subnet1-Demo-Mois-DevOpsSubnet1/RouteTable
+  VPCDemoMoisDevOpsPrivateSubnet1DemoMoisDevOpsSubnet1RouteTableAssociation8246BE2D:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: VPCDemoMoisDevOpsPrivateSubnet1DemoMoisDevOpsSubnet1RouteTable79C004C5
+      SubnetId:
+        Ref: VPCDemoMoisDevOpsPrivateSubnet1DemoMoisDevOpsSubnet1Subnet2C175514
+    Metadata:
+      aws:cdk:path: Stack-Exemple-CDK/VPC-Demo-Mois-DevOps/Private-Subnet1-Demo-Mois-DevOpsSubnet1/RouteTableAssociation
+  VPCDemoMoisDevOpsPrivateSubnet1DemoMoisDevOpsSubnet1DefaultRoute6FCA9955:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: VPCDemoMoisDevOpsPrivateSubnet1DemoMoisDevOpsSubnet1RouteTable79C004C5
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+        Ref: VPCDemoMoisDevOpsPublicSubnetDemoMoisDevOpsSubnet1NATGatewayB3C8D409
+    Metadata:
+      aws:cdk:path: Stack-Exemple-CDK/VPC-Demo-Mois-DevOps/Private-Subnet1-Demo-Mois-DevOpsSubnet1/DefaultRoute
+  VPCDemoMoisDevOpsPrivateSubnet2DemoMoisDevOpsSubnet1Subnet21E6E917:
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: 10.0.8.0/22
+      VpcId:
+        Ref: VPCDemoMoisDevOpsF2013231
+      AvailabilityZone:
+        Fn::Select:
+          - 0
+          - Fn::GetAZs: ""
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: Private-Subnet2-Demo-Mois-DevOps
+        - Key: aws-cdk:subnet-type
+          Value: Private
+        - Key: Name
+          Value: Stack-Exemple-CDK/VPC-Demo-Mois-DevOps/Private-Subnet2-Demo-Mois-DevOpsSubnet1
+    Metadata:
+      aws:cdk:path: Stack-Exemple-CDK/VPC-Demo-Mois-DevOps/Private-Subnet2-Demo-Mois-DevOpsSubnet1/Subnet
+  VPCDemoMoisDevOpsPrivateSubnet2DemoMoisDevOpsSubnet1RouteTable69A82C1D:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: VPCDemoMoisDevOpsF2013231
+      Tags:
+        - Key: Name
+          Value: Stack-Exemple-CDK/VPC-Demo-Mois-DevOps/Private-Subnet2-Demo-Mois-DevOpsSubnet1
+    Metadata:
+      aws:cdk:path: Stack-Exemple-CDK/VPC-Demo-Mois-DevOps/Private-Subnet2-Demo-Mois-DevOpsSubnet1/RouteTable
+  VPCDemoMoisDevOpsPrivateSubnet2DemoMoisDevOpsSubnet1RouteTableAssociationCDFF8CA7:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: VPCDemoMoisDevOpsPrivateSubnet2DemoMoisDevOpsSubnet1RouteTable69A82C1D
+      SubnetId:
+        Ref: VPCDemoMoisDevOpsPrivateSubnet2DemoMoisDevOpsSubnet1Subnet21E6E917
+    Metadata:
+      aws:cdk:path: Stack-Exemple-CDK/VPC-Demo-Mois-DevOps/Private-Subnet2-Demo-Mois-DevOpsSubnet1/RouteTableAssociation
+  VPCDemoMoisDevOpsPrivateSubnet2DemoMoisDevOpsSubnet1DefaultRoute6F6153EF:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: VPCDemoMoisDevOpsPrivateSubnet2DemoMoisDevOpsSubnet1RouteTable69A82C1D
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+        Ref: VPCDemoMoisDevOpsPublicSubnetDemoMoisDevOpsSubnet1NATGatewayB3C8D409
+    Metadata:
+      aws:cdk:path: Stack-Exemple-CDK/VPC-Demo-Mois-DevOps/Private-Subnet2-Demo-Mois-DevOpsSubnet1/DefaultRoute
+  VPCDemoMoisDevOpsIGW7D3E0A23:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: Stack-Exemple-CDK/VPC-Demo-Mois-DevOps
+    Metadata:
+      aws:cdk:path: Stack-Exemple-CDK/VPC-Demo-Mois-DevOps/IGW
+  VPCDemoMoisDevOpsVPCGW1FBBEA86:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId:
+        Ref: VPCDemoMoisDevOpsF2013231
+      InternetGatewayId:
+        Ref: VPCDemoMoisDevOpsIGW7D3E0A23
+    Metadata:
+      aws:cdk:path: Stack-Exemple-CDK/VPC-Demo-Mois-DevOps/VPCGW
+  SSMRoleBB9189E3:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service:
+                Fn::Join:
+                  - ""
+                  - - ec2.
+                    - Ref: AWS::URLSuffix
+        Version: "2012-10-17"
+      Description: Role pour SSM
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+    Metadata:
+      aws:cdk:path: Stack-Exemple-CDK/SSM-Role/Resource
+  VMLinuxDemoMoisDevOpsInstanceSecurityGroup2F707948:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Stack-Exemple-CDK/VMLinux-Demo-Mois-DevOps/InstanceSecurityGroup
+      SecurityGroupEgress:
+        - CidrIp: 0.0.0.0/0
+          Description: Allow all outbound traffic by default
+          IpProtocol: "-1"
+      SecurityGroupIngress:
+        - CidrIp: 0.0.0.0/0
+          Description: Access SSH
+          FromPort: 22
+          IpProtocol: tcp
+          ToPort: 22
+      Tags:
+        - Key: Name
+          Value: Stack-Exemple-CDK/VMLinux-Demo-Mois-DevOps
+      VpcId:
+        Ref: VPCDemoMoisDevOpsF2013231
+    Metadata:
+      aws:cdk:path: Stack-Exemple-CDK/VMLinux-Demo-Mois-DevOps/InstanceSecurityGroup/Resource
+  VMLinuxDemoMoisDevOpsInstanceProfileB10A5666:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles:
+        - Ref: SSMRoleBB9189E3
+    Metadata:
+      aws:cdk:path: Stack-Exemple-CDK/VMLinux-Demo-Mois-DevOps/InstanceProfile
+  VMLinuxDemoMoisDevOpsADA52701:
+    Type: AWS::EC2::Instance
+    Properties:
+      AvailabilityZone:
+        Fn::Select:
+          - 0
+          - Fn::GetAZs: ""
+      IamInstanceProfile:
+        Ref: VMLinuxDemoMoisDevOpsInstanceProfileB10A5666
+      ImageId:
+        Ref: SsmParameterValueawsserviceamiamazonlinuxlatestamzn2amihvmx8664gp2C96584B6F00A464EAD1953AFF4B05118Parameter
+      InstanceType: t3.small
+      SecurityGroupIds:
+        - Fn::GetAtt:
+            - VMLinuxDemoMoisDevOpsInstanceSecurityGroup2F707948
+            - GroupId
+      SubnetId:
+        Ref: VPCDemoMoisDevOpsPrivateSubnet1DemoMoisDevOpsSubnet1Subnet2C175514
+      Tags:
+        - Key: Name
+          Value: Stack-Exemple-CDK/VMLinux-Demo-Mois-DevOps
+      UserData:
+        Fn::Base64: "#!/bin/bash"
+    DependsOn:
+      - SSMRoleBB9189E3
+    Metadata:
+      aws:cdk:path: Stack-Exemple-CDK/VMLinux-Demo-Mois-DevOps/Resource
+  CDKMetadata:
+    Type: AWS::CDK::Metadata
+    Properties:
+      Analytics: v2:deflate64:H4sIAAAAAAAA/11PQW7CMBB8C3djSHPgWhRVKBdkJYj7xixiS2Ije10URfl7bdI0VU87nhmPZjKZ5bncrt7h6df6ct8M2jqUQ82g76JCb4PTKIqrUeCgQ0YnCms8u6A50X8tUbgQkzWjSHED6jc5nB86aWdVCBWalnQdGoOvvwuqbGA8QdPiwi/c3nurCVLyrzmBj1KlcwQ+AOMTeqEcfUW4BJcmNo54NkxNfl57jitvHRoWZZwEJs6oUQdH3B+cDY9Xmf/EbB0FQSeHyk6l5zvLytkrtTiOo1A936zZ5HIns+3q0xOtXTBMHcpqut9xej6YhwEAAA==
+    Metadata:
+      aws:cdk:path: Stack-Exemple-CDK/CDKMetadata/Default
+    Condition: CDKMetadataAvailable
+Parameters:
+  SsmParameterValueawsserviceamiamazonlinuxlatestamzn2amihvmx8664gp2C96584B6F00A464EAD1953AFF4B05118Parameter:
+    Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
+    Default: /aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2
+Conditions:
+  CDKMetadataAvailable:
+    Fn::Or:
+      - Fn::Or:
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - af-south-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-east-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-northeast-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-northeast-2
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-south-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-southeast-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-southeast-2
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ca-central-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - cn-north-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - cn-northwest-1
+      - Fn::Or:
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-central-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-north-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-south-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-west-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-west-2
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-west-3
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - me-south-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - sa-east-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-east-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-east-2
+      - Fn::Or:
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-west-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-west-2
+
